@@ -9,9 +9,8 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
 from pathlib import Path
-
+from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,18 +24,22 @@ SECRET_KEY = 'django-insecure-z_*h7o$b2=2&b@+ijx-f))!1=d=v^e$x6meca3q*_hr$aqj16_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'youtube_api_integration.apps.YoutubeApiIntegrationConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "rest_framework",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -123,3 +126,26 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CELERY STUFF
+INTERVAL = 1
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+CELERY_BEAT_SCHEDULE = {
+    "fetch_and_update_db_task": {
+        "task": "backend.celery.fetch_and_update_db",
+        "schedule": crontab(minute=f"*/{INTERVAL}"),
+    },
+}
+
+
+# YOUTUBE SEARCH API
+API_SERVICE_NAME = "youtube"
+API_VERSION = "v3"
+SEARCH_QUERY = "Cricket"
+MAX_RESULTS = 25
+BASE_URL = "https://www.youtube.com/watch?v="
