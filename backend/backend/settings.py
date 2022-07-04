@@ -132,13 +132,10 @@ INTERVAL = 1
 BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     "fetch_and_update_db_task": {
         "task": "backend.celery.fetch_and_update_db",
-        "schedule": crontab(minute=f"*/{INTERVAL}"),
+        "schedule": crontab(minute='*/1'),
     },
 }
 
@@ -146,6 +143,11 @@ CELERY_BEAT_SCHEDULE = {
 # YOUTUBE SEARCH API
 API_SERVICE_NAME = "youtube"
 API_VERSION = "v3"
-SEARCH_QUERY = "Cricket"
+SEARCH_QUERY = "Cooking"
 MAX_RESULTS = 25
 BASE_URL = "https://www.youtube.com/watch?v="
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+}

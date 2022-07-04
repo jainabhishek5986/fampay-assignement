@@ -11,7 +11,7 @@ class GetVideoDetails(APIView):
         paginator = PageNumberPagination()
         page = request.GET.get("page", 1)
         videos = Video.objects.all()
-        paginated_videos = paginator.paginate_queryset(videos, page)
+        paginated_videos = paginator.paginate_queryset(videos, request)
         serialized_videos = VideoSerializer(paginated_videos, many=True)
 
         return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": serialized_videos.data})
