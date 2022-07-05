@@ -9,10 +9,9 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import os
+
 from pathlib import Path
 from celery.schedules import crontab
-from elasticsearch import Elasticsearch, RequestsHttpConnection
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,10 +81,10 @@ DATABASES = {
     }
 }
 
+#Elastic Search
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'https://localhost:9200',
-        'connection_class': RequestsHttpConnection,
+        'hosts': ["es:9200", 'localhost:9200'],
     },
 }
 
@@ -137,7 +136,7 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_BEAT_SCHEDULE = {
     "fetch_and_update_db_task": {
         "task": "backend.celery.fetch_and_update_db",
-        "schedule": crontab(minute='*/1'),
+        "schedule": crontab(minute=f"*/{INTERVAL}"),
     },
 }
 
@@ -148,6 +147,7 @@ SEARCH_QUERY = "Cooking"
 MAX_RESULTS = 25
 BASE_URL = "https://www.youtube.com/watch?v="
 
+#PAGINATION
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,

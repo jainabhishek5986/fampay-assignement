@@ -16,6 +16,7 @@ services:
       - DJANGO_ALLOWED_HOSTS=127.0.0.1 localhost
     depends_on:
       - redis
+      - es
   redis:
     image: redis:alpine
 #    command: redis-server
@@ -45,3 +46,9 @@ services:
       - DJANGO_ALLOWED_HOSTS=localhost
     depends_on:
       - redis
+  es:
+    image: elasticsearch:7.8.1
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"

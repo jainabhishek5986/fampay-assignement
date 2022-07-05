@@ -15,7 +15,7 @@ from backend.settings import (
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 app = Celery('backend')
 
-app.config_from_object('django.conf:settings',  namespace='CELERY')
+app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 logger = get_task_logger(__name__)
@@ -26,6 +26,10 @@ def debug_task(self):
     print('Request: {0!r}'.format(self.request))
 
 
+"""
+Celery Task - Fetches and Updates Database on a regular Interval
+
+"""
 @app.task(bind=True)
 def fetch_and_update_db(self):
     from youtube_api_integration.models import Video
