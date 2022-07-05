@@ -58,9 +58,12 @@ class AddAPIKeys(APIView):
         keys = request.data.get("keys", [])
 
         for key in keys:
-            apikey = APIKey(
-                key=key
-            )
-            apikey.save()
+            try:
+                apikey = APIKey.objects.get(key=key)
+            except:
+                apikey = APIKey(
+                    key=key
+                )
+                apikey.save()
 
         return Response(status=status.HTTP_200_OK, data={"message": "Success - API Keys Added Successfully"})

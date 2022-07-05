@@ -30,13 +30,13 @@ def search(query, interval, max_results):
             )
             return response
         except HttpError as err:
-            print("An HTTP error" + err.resp.status + "occurred" + err.content)
+            print("Response Code : " + str(err.resp.status) + ", Error : " + str(err.content))
             if err.resp.status == 403:
-                print("Request Failed with" + key)
+                print("Request Failed with API KEY : " + key.key)
                 key.is_limit_over = False  #Key Usage limit Over
                 key.save()
                 continue
-            return dict()
+    return dict()
 
 
 def es_create_index_if_not_exists(es, index):
