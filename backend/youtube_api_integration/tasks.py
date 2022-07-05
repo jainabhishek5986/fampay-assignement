@@ -10,11 +10,11 @@ from backend.settings import (
 
 def search(query, interval, max_results):
     from youtube_api_integration.models import APIKey
-    api_keys = APIKey.objects.filter(is_limit_over=False).values_list('key', flat=True)
+    api_keys = APIKey.objects.filter(is_limit_over=False)
 
     for key in api_keys:
         try:
-            youtube = build(API_SERVICE_NAME, API_VERSION, developerKey=key)
+            youtube = build(API_SERVICE_NAME, API_VERSION, developerKey=key.key)
             published_after = (datetime.now() - timedelta(minutes=interval)).isoformat() + "Z"
 
             response = (
@@ -32,5 +32,7 @@ def search(query, interval, max_results):
             print("An HTTP error" + err.resp.status + "occurred" + err.content)
             if err.resp.status == 403:
                 print("Request Failed with" + key)
+                key.is_limit_over = False
+                key.save()
                 continue
             return dict()

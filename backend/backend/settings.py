@@ -13,10 +13,9 @@ import os
 from pathlib import Path
 from celery.schedules import crontab
 from elasticsearch import Elasticsearch, RequestsHttpConnection
-from requests_aws4auth import AWS4Auth
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -29,8 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "rest_framework",
-    # "django_celery_beat",
     "django_elasticsearch_dsl",
 ]
 
@@ -76,7 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -87,28 +82,12 @@ DATABASES = {
     }
 }
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID',"AKIAWXBNZIZ24AV6YLM7")
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY',"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")
-AWS_SERVICE = 'es'
-AWS_ELASTICSEARCH = os.environ.get('AWS_ELASTICSEARCH','search-abhishek-search-small-tsu22ka5xabo2wcxbypqir3rma.us-east-2.es.amazonaws.com')
-http_auth = AWS4Auth(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, "us-east-2", AWS_SERVICE)
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': [{'host': AWS_ELASTICSEARCH, 'port': 443}],
-        'http_auth' : http_auth,
-        'use_ssl' : True,
-        'verify_certs' : True,
-        'connection_class' : RequestsHttpConnection
+        'hosts': 'https://localhost:9200',
+        'connection_class': RequestsHttpConnection,
     },
 }
-# ELASTICSEARCH_DSL={
-#     'default': {
-#         # 'hosts':'https://search-abhishek-search-small-tsu22ka5xabo2wcxbypqir3rma.us-east-2.es.amazonaws.com',
-#         'hosts': 'https://localhost:9200'
-#         # 'connection_class' : RequestsHttpConnection,
-#     },
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -128,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -142,7 +120,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -155,16 +132,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CELERY STUFF
 INTERVAL = 1
-BROKER_URL = 'redis://redis:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
-# CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_BEAT_SCHEDULE = {
     "fetch_and_update_db_task": {
         "task": "backend.celery.fetch_and_update_db",
         "schedule": crontab(minute='*/1'),
     },
 }
-
 
 # YOUTUBE SEARCH API
 API_SERVICE_NAME = "youtube"

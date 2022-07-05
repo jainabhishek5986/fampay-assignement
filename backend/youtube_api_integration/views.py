@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from youtube_api_integration.models import Video
+from youtube_api_integration.models import Video, APIKey
 from rest_framework.pagination import PageNumberPagination
 from youtube_api_integration.serializers import VideoSerializer
 from .documents import Video as VideoDocument
@@ -40,3 +40,16 @@ class SearchVideo(APIView):
         serialized_videos = VideoSerializer(paginated_videos, many=True)
 
         return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": serialized_videos.data})
+
+
+class AddAPIKeys(APIView):
+    def post(self, request):
+        keys = request.data.get("keys", [])
+
+        for key in keys:
+            apikey = APIKey(
+                key=key
+            )
+            apikey.save()
+
+        return Response(status=status.HTTP_200_OK, data={"message": "Success - API Keys Added Successfully"})

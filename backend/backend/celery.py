@@ -15,8 +15,8 @@ from backend.settings import (
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 app = Celery('backend')
 
-app.config_from_object('django.conf:settings')
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+app.config_from_object('django.conf:settings',  namespace='CELERY')
+app.autodiscover_tasks()
 
 logger = get_task_logger(__name__)
 
