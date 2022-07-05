@@ -15,6 +15,8 @@ You can view logs for different used services -
     
     docker-compose logs -f 'redis'
 
+    docker-compose logs -f 'web'
+
     docker-compose logs -f 'celery'
 
     docker-compose logs -f 'celery-beat'
@@ -45,5 +47,8 @@ Other APIs in the collection -
 2. Search DB API - API for Searching in Database using Elastic Search - 
 
 ![](https://github.com/jainabhishek5986/fampay-assignment/blob/main/backend/images/Search%20API%20Postman.png)
+
+Or You can directly visit - http://127.0.0.1:8000/youtube/home - to check the response. 
+
 
 Thank you !! :D
