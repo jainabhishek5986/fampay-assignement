@@ -28,22 +28,25 @@ You can add the API Keys of your choice using "Add API Keys" in below postman co
 You can configure following things in the settings file - 
 
 "SEARCH_QUERY" - Query used for youtube search
+
 "INTERVAL" - Regular Interval at which you wish to call the cron task.
+
 "MAX_RESULTS" - Max results you want to fetch from Youtube.
+
 "REST_FRAMEWORK.PAGE_SIZE" - Page count for Paginated Response.
 
 https://www.getpostman.com/collections/7130d5a35d0e7bb7a5fe
 
-![](/Users/abhishek/Desktop/Screenshot 2022-07-05 at 6.08.34 PM.png)
+![](https://github.com/jainabhishek5986/fampay-assignment/blob/main/backend/images/Add%20API%20Keys%20Postman.png)
 
 Other APIs in the collection - 
 
 1. Home Screen API - Gives latest fetched videos in reverse chronological order.
 
-![](/Users/abhishek/Desktop/Screenshot 2022-07-05 at 6.21.06 PM.png)
+![](https://github.com/jainabhishek5986/fampay-assignment/blob/main/backend/images/Home%20Screen%20API%20Postman.png)
 
 2. Search DB API - API for Searching in Database using Elastic Search - 
 
-![](/Users/abhishek/Desktop/Screenshot 2022-07-05 at 6.24.08 PM.png)
+![](https://github.com/jainabhishek5986/fampay-assignment/blob/main/backend/images/Search%20API%20Postman.png)
 
 Thank you !! :D
