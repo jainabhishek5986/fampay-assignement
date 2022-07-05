@@ -30,12 +30,12 @@ def search(query, interval, max_results):
             )
             return response
         except HttpError as err:
-            print("Response Code : " + str(err.resp.status) + ", Error : " + str(err.content))
+            print("Response Code : " + str(err.resp.status) + ", Error : " + str(err))
             if err.resp.status == 403:
                 print("Request Failed with API KEY : " + key.key)
-                key.is_limit_over = False  #Key Usage limit Over
+                key.is_limit_over = True  #Key Usage limit Over
                 key.save()
-                continue
+                print("Limit Updated for API KEY : " + key.key)
     return dict()
 
 

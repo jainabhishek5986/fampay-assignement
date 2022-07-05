@@ -84,7 +84,7 @@ DATABASES = {
 #Elastic Search
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': ["es:9200", 'localhost:9200'],
+        'hosts': ["es:9200"],
     },
 }
 

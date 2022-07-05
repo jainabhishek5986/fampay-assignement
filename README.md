@@ -7,8 +7,6 @@ FamPay Assignment
 
     cd backend/
 
-    chmod 775 entrypoint.sh
-
     docker-compose up -d --build
 
 Server should be up and running on port 8000 for web.
@@ -23,7 +21,8 @@ You can view logs for different used services -
 
     docker-compose logs -f 'es'
 
-You can add the API Keys of your choice using "Add API Keys" in below postman collection
+You must add atleast 1 Google API Key of your choice using "Add API Keys" in below postman collection
+https://www.getpostman.com/collections/7130d5a35d0e7bb7a5fe
 
 You can configure following things in the settings file - 
 
@@ -34,8 +33,6 @@ You can configure following things in the settings file -
 "MAX_RESULTS" - Max results you want to fetch from Youtube.
 
 "REST_FRAMEWORK.PAGE_SIZE" - Page count for Paginated Response.
-
-https://www.getpostman.com/collections/7130d5a35d0e7bb7a5fe
 
 ![](https://github.com/jainabhishek5986/fampay-assignment/blob/main/backend/images/Add%20API%20Keys%20Postman.png)
 

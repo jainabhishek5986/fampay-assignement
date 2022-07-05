@@ -15,6 +15,7 @@ class GetVideoDetails(APIView):
     Home Page API for the App - Displays latest results.
 
     """
+
     def get(self, request):
         paginator = PageNumberPagination()
         videos = Video.objects.all()
@@ -29,6 +30,7 @@ class SearchVideo(APIView):
     Search API - Displays results based on some keyword search, Uses Elastic Search
 
     """
+
     def get(self, request):
         paginator = PageNumberPagination()
         title_query = request.GET.get("title_query", None)
@@ -45,6 +47,8 @@ class SearchVideo(APIView):
             serialized_videos = VideoSerializer(paginated_videos, many=True)
 
             return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": serialized_videos.data})
+        except AttributeError:
+            return Response(status=status.HTTP_412_PRECONDITION_FAILED, data={"message": "Empty Database"})
         except:
             es_create_index_if_not_exists(elasticsearch, "video")
 
@@ -54,6 +58,7 @@ class AddAPIKeys(APIView):
     Add API Keys API - Can be used to add multiple APIKeys
 
     """
+
     def post(self, request):
         keys = request.data.get("keys", [])
 
